@@ -14,19 +14,5 @@ export default abstract class BaseDatabase {
            database: process.env.DB_DATABASE,
            multipleStatements: true
         }
-     })
-
-    abstract TABLE_NAME: string
-
-    protected async getAll () {
-        return await BaseDatabase.connection(this.TABLE_NAME).select()
-    }
-
-    protected async getById (id: number) {
-        return await BaseDatabase.connection(this.TABLE_NAME).select().where("id", id)
-    }
-
-    protected async insertInto (item: any) {
-        await BaseDatabase.connection(this.TABLE_NAME).insert(item)
-    }
+    })
 }
