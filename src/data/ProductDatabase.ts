@@ -7,7 +7,7 @@ import BaseDatabase from "./BaseDatabase"
 export class ProductDatabase extends BaseDatabase implements ProductRepository {
     TABLE_NAME = "MiniMarket_Products"
 
-    getAllProducts = async (): Promise<Product[]> => {
+    getAllProducts = async (): Promise<Product[] | []> => {
         try {
             return await BaseDatabase.connection(this.TABLE_NAME).select()
     
@@ -27,9 +27,10 @@ export class ProductDatabase extends BaseDatabase implements ProductRepository {
     }
 
 
-    getProductById = async (id: number): Promise<any> => {
+    getProductById = async (id: number): Promise<Product | undefined> => {
         try {
-            return await BaseDatabase.connection(this.TABLE_NAME).select().where({id})
+            const result = await BaseDatabase.connection(this.TABLE_NAME).select().where({id})
+            return  result[0]
     
         } catch (err: any) {
             throw new CustomError(err.statusCode, err.message)
@@ -37,9 +38,9 @@ export class ProductDatabase extends BaseDatabase implements ProductRepository {
     }
 
 
-    updateStock = async (id: number, newStock: number): Promise<any> => {
+    updateStock = async (id: number, newStock: number): Promise<void> => {
         try {
-            return await BaseDatabase.connection(this.TABLE_NAME).update("qty_stock", newStock).where({id})
+            await BaseDatabase.connection(this.TABLE_NAME).update("qty_stock", newStock).where({id})
     
         } catch (err: any) {
             throw new CustomError(err.statusCode, err.message)

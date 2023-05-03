@@ -17,7 +17,7 @@ export class ClientDatabase extends BaseDatabase implements ClientRepository {
     }
 
 
-    getAllClients = async (): Promise<Client[]> => {
+    getAllClients = async (): Promise<Client[] | []> => {
         try {
             return await BaseDatabase.connection(this.TABLE_NAME).select()
     
@@ -27,9 +27,10 @@ export class ClientDatabase extends BaseDatabase implements ClientRepository {
     }
 
 
-    getClient = async (column: string, value: string): Promise<any> => {
+    getClient = async (column: string, value: string): Promise<Client | undefined> => {
         try {
-            return await BaseDatabase.connection(this.TABLE_NAME).select().where(column, value)
+            const result = await BaseDatabase.connection(this.TABLE_NAME).select().where(column, value)
+            return result[0]
     
         } catch (err: any) {
             throw new CustomError(err.statusCode, err.message)

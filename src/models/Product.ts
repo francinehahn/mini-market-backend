@@ -1,21 +1,9 @@
 export class Product {
-    constructor (private id: number, private name: string, private price: number, private qtyStock: number) {
+    constructor (readonly id: number, readonly name: string, readonly price: number, readonly qty_stock: number) {
         this.id = id
         this.name = name
         this.price = price
-        this.qtyStock = qtyStock
-    }
-
-    public getId () {
-        return this.id
-    }
-
-    public getName () {
-        return this.name
-    }
-
-    public getQtyStock () {
-        return this.qtyStock
+        this.qty_stock = qty_stock
     }
 }
 

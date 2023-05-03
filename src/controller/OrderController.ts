@@ -15,7 +15,6 @@ export class OrderController {
             }
          
             await this.orderBusiness.createOrder(input)
-    
             res.status(201).send("Success! The order has been registered.")
     
         } catch (err: any) {

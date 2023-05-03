@@ -15,8 +15,8 @@ export class ClientBusiness {
             }
 
             const clientExists = await this.clientDatabase.getClient("name", name)
-
-            if (clientExists.length > 0) {
+            
+            if (clientExists) {
                 throw new DuplicateName()
             }
 

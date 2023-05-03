@@ -1,5 +1,5 @@
 export class Client {
-    constructor (private id: string, private name: string) {
+    constructor (readonly id: string, readonly name: string) {
         this.id = id
         this.name = name
     }

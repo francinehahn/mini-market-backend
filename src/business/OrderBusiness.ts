@@ -20,7 +20,6 @@ export class OrderBusiness {
         try {
             const today = new Date().toISOString().slice(0, 10).replace("-", ",")
             const createdAt = new Date(today)
-            const formattedDeliveryDate = new Date(input.deliveryDate.toString().split("/").reverse().join(","))
             
             if (!input.clientId) {
                 throw new MissingId()
@@ -29,7 +28,9 @@ export class OrderBusiness {
             if (!input.deliveryDate) {
                 throw new MissingDeliveryDate()
             }
-    
+
+            const formattedDeliveryDate = new Date(input.deliveryDate.toString().split("/").reverse().join(","))
+
             if (!input.products) {
                 throw new MissingProducts()
             }
@@ -40,7 +41,7 @@ export class OrderBusiness {
     
             const clientExists = await this.clientDatabase.getClient("id", input.clientId)
             
-            if (clientExists.length === 0) {
+            if (!clientExists) {
                 throw new ClientNotFound()
             }
     
@@ -49,21 +50,22 @@ export class OrderBusiness {
             for (let i = 0; i < input.products.length; i++) {
                 const productExists = await this.productDatabase.getProductById(input.products[i].id)
     
-                if (productExists.length === 0) {
+                if (!productExists) {
                     throw new ProductNotFound()
                 }
                
-                if (Number(input.products[i].qty) > productExists[0].qty_stock) {
-                    throw new InvalidQuantity(input.products[i].id, productExists[0].qty_stock)
+                if (Number(input.products[i].qty) > productExists.qty_stock) {
+                    throw new InvalidQuantity(input.products[i].id, productExists.qty_stock)
                 }
 
-                productsList.push({...input.products[i], qtyStock: productExists[0].qty_stock})
+                productsList.push({...input.products[i], qtyStock: productExists.qty_stock})
             }
     
             for (let i = 0; i < productsList.length; i++) {
                 const id = generateId()
                 const newOrder = new Order(
-                    id, input.clientId,
+                    id,
+                    input.clientId,
                     productsList[i].id,
                     productsList[i].qty,
                     formattedDeliveryDate,

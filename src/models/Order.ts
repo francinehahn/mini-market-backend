@@ -3,12 +3,12 @@ import { inputProductsOrderDTO } from "./Product"
 
 export class Order {
     constructor (
-        private id: string,
-        private fk_client_id: string,
-        private fk_product_id: number,
-        private qty: number,
-        private delivery_date: Date,
-        private created_at: Date
+        readonly id: string,
+        readonly fk_client_id: string,
+        readonly fk_product_id: number,
+        readonly qty: number,
+        readonly delivery_date: Date,
+        readonly created_at: Date
     ) {
         this.id = id
         this.fk_client_id = fk_client_id

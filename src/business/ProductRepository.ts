@@ -2,8 +2,8 @@ import { Product, returnProductStockDTO } from "../models/Product"
 
 
 export interface ProductRepository {
-    getAllProducts (): Promise<Product[]>
+    getAllProducts (): Promise<Product[] | []>
     getStock (): Promise<returnProductStockDTO[]>
-    getProductById (id: number): Promise<any>
-    updateStock (id: number, newStock: number): Promise<any>
+    getProductById (id: number): Promise<Product | undefined>
+    updateStock (id: number, newStock: number): Promise<void>
 }
